@@ -1,33 +1,60 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterStatsController : MonoBehaviour
 {
     [SerializeField] private CharacterStats baseStats;
+    private GameManager instance;
     public CharacterStats CurrentStats { get; private set; }
     public List<CharacterStats> statsModifiers = new List<CharacterStats>();
     public List<Item> items;
 
     private void Awake()
     {
-        UpdateCharacterStats();
+        InitCharacterStats();
     }
-    private void UpdateCharacterStats()
+    private void Start()
     {
-        CurrentStats = new CharacterStats();
-        CurrentStats.statsChangeType = baseStats.statsChangeType;
-        CurrentStats.exp = baseStats.exp;
-        CurrentStats.maxHealth = baseStats.maxHealth;
-        CurrentStats.attack = baseStats.attack;
-        CurrentStats.defense = baseStats.defense;
-        CurrentStats.critical = baseStats.critical;
-        CurrentStats.gold= baseStats.gold;
-        CurrentStats.level = baseStats.level;
-        CurrentStats.ID=baseStats.ID;
-        CurrentStats.descript = baseStats.descript;
+        instance = GameManager.instance;
     }
+    private void InitCharacterStats()
+    {
+        CurrentStats = baseStats;
+    }
+
+    public void UpdateItemStats(Item item, bool isEquip)
+    {
+            switch (item.itemType)
+        {
+            
+            case ItemType.Attatk:
+                CurrentStats.attack += isEquip ? item.itemStats : -item.itemStats;
+                break;
+            case ItemType.Defense:
+                CurrentStats.defense += isEquip ? item.itemStats : -item.itemStats;
+                break;
+            case ItemType.Hp:
+                CurrentStats.maxHealth += isEquip ? item.itemStats : -item.itemStats;
+                break;
+            case ItemType.Critical:
+                CurrentStats.critical += isEquip ? item.itemStats : -item.itemStats;
+                break;
+            case ItemType.Consumables:
+                //TODO
+                break;
+            case ItemType.Etc:
+                //TODO
+                break;
+        }
+        instance.SetUI();
+
+
+    }
+
 
 
 }

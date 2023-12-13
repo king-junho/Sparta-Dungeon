@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void SetUI()
+    public void SetUI()
     {
         atkText.text = _playerStats.CurrentStats.attack.ToString();
         defText.text = _playerStats.CurrentStats.attack.ToString();
