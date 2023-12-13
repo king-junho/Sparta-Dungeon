@@ -9,10 +9,20 @@ public class Slot : MonoBehaviour
 {
     public Item item;
     public UnityEngine.UI.Image image;
+    private CharacterStatsController _statsController;
+    private GameManager instance;
 
     public GameObject equpimentNotice;
     private bool IsEquip = false;
 
+    private void Awake()
+    {
+        instance=GameManager.instance;
+    }
+    private void Start()
+    {
+        _statsController=instance.Player.GetComponent<CharacterStatsController>();
+    }
     public void SetItem(Item item)
     {
         this.item = item;
@@ -33,5 +43,6 @@ public class Slot : MonoBehaviour
     {
         IsEquip = !IsEquip;
         equpimentNotice.SetActive(IsEquip);
+        _statsController.UpdateItemStats(item,IsEquip);
     }
 }
